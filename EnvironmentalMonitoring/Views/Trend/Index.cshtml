@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="chart-grid">
+
+    <div class="chart-card">
+        <canvas id="tempChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+        <canvas id="humidityChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+        <canvas id="pressureChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+        <canvas id="levelChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+        <canvas id="flowChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+        <canvas id="totalFlowChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+        <canvas id="voltage1Chart"></canvas>
+    </div>
+
+    <div class="chart-card">
+        <canvas id="voltage2Chart"></canvas>
+    </div>
+
+    <div class="chart-card">
+        <canvas id="waterTempChart"></canvas>
+    </div>
+
+</div>
+
+<script>
+    const tempChart = new Chart(
+        document.getElementById("tempChart"),
+        {
+            type:'line',
+            data:{
+                labels:[],
+                datasets:[{
+                    label:'Nhiệt độ',
+                    data:[],
+                    borderWidth:2
+                }]
+            }
+        });
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
+
+<script>
+
+const connection = new signalR.HubConnectionBuilder()
+    .withUrl("/monitorHub")
+    .build();
+
+connection.start()
+    .then(() => {
+        console.log("Trend Connected");
+    })
+    .catch(err => console.error(err));
+
+connection.on("ReceiveData", function(data){
+    console.log("ReceiveData",data);
+
+    tempChart.data.labels.push(
+        new Date().toLocaleTimeString()
+    );
+
+    tempChart.data.datasets[0].data.push(
+        data.temperature
+    );
+
+    if(tempChart.data.labels.length > 20){
+        tempChart.data.labels.shift();
+        tempChart.data.datasets[0].data.shift();
+    }
+
+    tempChart.update();
+});
+
+</script>
+</body>
+</html>
