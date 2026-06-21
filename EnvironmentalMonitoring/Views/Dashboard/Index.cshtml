@@ -1,0 +1,107 @@
+@{
+    Layout = "_Layout";
+}
+<div class="grid">
+
+    <div class="card">
+        <div class="card-title">Nhiệt độ</div>
+        <div class="card-value" id="temperature">0.00</div>
+        <div class="card-unit">°C</div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Độ ẩm</div>
+        <div class="card-value" id="humidity">0.00</div>
+        <div class="card-unit">%</div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Áp suất</div>
+        <div class="card-value" id="pressure">0.00</div>
+        <div class="card-unit">Pa</div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Mức</div>
+        <div class="card-value" id="level">0.00</div>
+        <div class="card-unit">m</div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Lưu lượng</div>
+        <div class="card-value" id="flow">0.00</div>
+        <div class="card-unit">m³/h</div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Lưu lượng tổng</div>
+        <div class="card-value" id="totalFlow">0.00</div>
+        <div class="card-unit">m³</div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Điện áp 1</div>
+        <div class="card-value" id="voltage1">0.00</div>
+        <div class="card-unit">V</div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Điện áp 2</div>
+        <div class="card-value" id="voltage2">0.00</div>
+        <div class="card-unit">V</div>
+    </div>
+
+    <div class="card">
+        <div class="card-title">Nhiệt nước</div>
+        <div class="card-value" id="waterTemp">0.00</div>
+        <div class="card-unit">°C</div>
+    </div>
+
+</div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.7/signalr.min.js"></script>
+
+<script>
+    console.log("Dashboard JS Loaded");
+
+    const connection = new signalR.HubConnectionBuilder()
+        .withUrl("/monitorHub")
+        .build();
+
+connection.start()
+    .then(() => console.log("SignalR Connected"))
+    .catch(err => console.error(err));
+
+connection.on("ReceiveData", function(data){
+
+    console.log("Received:", data);
+
+    document.getElementById("temperature").innerText =
+        data.temperature;
+
+    document.getElementById("humidity").innerText =
+        data.humidity;
+
+    document.getElementById("pressure").innerText =
+        data.pressure;
+
+    document.getElementById("level").innerText =
+        data.level;
+
+    document.getElementById("flow").innerText =
+        data.flow;
+
+    document.getElementById("totalFlow").innerText =
+        data.totalFlow;
+
+    document.getElementById("voltage1").innerText =
+        data.voltage1;
+
+    document.getElementById("voltage2").innerText =
+        data.voltage2;
+
+    document.getElementById("waterTemp").innerText =
+        data.waterTemp;
+});
+
+</script>
+        

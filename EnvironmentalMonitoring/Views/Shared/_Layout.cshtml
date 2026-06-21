@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Environmental Monitoring</title>
+
+    <link rel="stylesheet" href="/css/site.css" />
+</head>
+<body>
+
+<div class="header">
+    Environmental Monitoring
+</div>
+
+<div class="container">
+
+    <div class="sidebar">
+        
+        <div class="menu-item">
+            Quản trị hệ thống
+        </div>
+
+        <div class="menu-item">
+            Giám sát
+        </div>
+
+        <!-- GIÁM SÁT --> 
+        <div class="menu-header" onclick="toggleMenu('monitorMenu', this)">
+            <span>Giám sát</span> 
+            <span class="arrow">▶</span>
+        </div> 
+        <div id="monitorMenu" class="submenu active">
+            <a href="/Dashboard">Số liệu</a> 
+            
+            <a href="/Trend">Biểu đồ</a> 
+            
+            <a href="/Message">Truyền tin</a> 
+            
+            <a href="/DigitalIO">Digital I/O</a>
+            
+        </div>
+
+        <!-- LỊCH SỬ --> 
+        
+        <div class="menu-header">
+            <a href="/History"> Lịch sử </a>
+            
+        </div>
+
+        <!-- LẤY MẪU --> 
+        <div class="menu-header">
+            <a href="/Sampling"> Lấy mẫu </a>
+            
+        </div>
+        
+        <!-- CẤU HÌNH --> 
+        <div class="menu-header" onclick="toggleMenu('configMenu', this)">
+            <span>Cấu hình</span> 
+            <span class="arrow">▶</span>
+            
+        </div>
+
+        <div id="configMenu" class="submenu">
+            <a href="/Config/Communication"> Truyền tin </a> 
+            
+            <a href="/Config/Alarm"> Cảnh báo </a> 
+            
+            <a href="/Config/Tags"> Tags </a>
+            
+        </div> 
+        
+        <!-- THIẾT BỊ --> 
+        
+        <div class="menu-header">
+            <a href="/Device"> Thiết bị </a>
+            
+        </div> 
+    </div> 
+    <div class="content"> @RenderBody() 
+    </div> 
+    </div>
+
+    <script> function toggleMenu(menuId, element){ 
+        const menu = document.getElementById(menuId); 
+        
+        menu.classList.toggle("active"); 
+        
+        if(element){ 
+            const arrow = element.querySelector(".arrow"); 
+            
+            if(arrow){ 
+                arrow.innerText = menu.classList.contains("active") 
+                    ? "▼" 
+                    : "▶"; 
+            } 
+        } 
+    } 
+    </script>
+
+</body>
+</html>
