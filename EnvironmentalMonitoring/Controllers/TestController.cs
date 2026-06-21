@@ -26,6 +26,6 @@ public class TestController : Controller
             waterTemp = 28.65
         });
 
-        return Ok();
+        return Content("Data sent successfully");
     }
 }

@@ -10,28 +10,32 @@ body{
 .sidebar{
     width:240px;
     background:white;
-    min-height:calc(100vh - 60px);
+    min-height:100vh;
     box-shadow:2px 0 5px rgba(0,0,0,.1);
 }
-.menu-header{ 
-    padding:15px; 
-    border-bottom:1px solid #eee; 
-    cursor:pointer; 
-    display:flex; 
-    justify-content:space-between; 
-    align-items:center; 
-    font-size:16px; color:#333; 
-} 
 
-.menu-header:hover{ 
-    background:#f5f5f5; 
-} 
+.menu-header{
+    padding:15px;
+    border-bottom:1px solid #eee;
+    cursor:pointer;
 
-.menu-header a{ 
-    text-decoration:none; 
-    color:#333; 
-    display:block; 
-    width:100%; 
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    font-size:16px;
+    color:#333;
+}
+
+.menu-header:hover{
+    background:#f5f5f5;
+}
+
+.menu-header a{
+    text-decoration:none;
+    color:#333;
+    display:block;
+    width:100%;
 }
 
 .menu-item{
@@ -106,15 +110,40 @@ body{
     margin-top:20px;
 }
 .submenu{
-    padding-left:20px;
+    display:none;
+    background:#fafafa;
 }
 
-.submenu-item{
-    padding:12px;
-    cursor:pointer;
-    color:#555;
+.submenu.active{
+    display:block;
 }
 
-.submenu-item:hover{
-    background:#f0f0f0;
+.submenu a{
+    display:block;
+    padding:12px 15px 12px 35px;
+    text-decoration:none;
+    color:#444;
+}
+
+.submenu a:hover{
+    background:#eeeeee;
+}
+
+.chart-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:20px;
+}
+
+.chart-card{
+    background:white;
+    padding:15px;
+    border-radius:4px;
+    box-shadow:0 2px 5px rgba(0,0,0,.2);
+    height:300px;
+}
+
+.chart-card canvas{
+    width:100% !important;
+    height:240px !important;
 }

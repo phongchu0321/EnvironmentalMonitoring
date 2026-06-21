@@ -1,0 +1,160 @@
+@{
+    Layout = "_Layout";
+}
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<div class="chart-grid">
+
+    <div class="chart-card">
+        <h3>Nhiệt độ</h3>
+        <canvas id="tempChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+        <h3>Độ ẩm</h3>
+        <canvas id="humidityChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+        <h3>Áp suất</h3>
+        <canvas id="pressureChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+        <h3>Mức</h3>
+        <canvas id="levelChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+        <h3>Lưu lượng</h3>
+        <canvas id="flowChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+        <h3>Lưu lượng tổng</h3>
+        <canvas id="totalFlowChart"></canvas>
+    </div>
+
+    <div class="chart-card">
+        <h3>Điện áp 1</h3>
+        <canvas id="voltage1Chart"></canvas>
+    </div>
+
+    <div class="chart-card">
+        <h3>Điện áp 2</h3>
+        <canvas id="voltage2Chart"></canvas>
+    </div>
+
+    <div class="chart-card">
+        <h3>Nhiệt nước</h3>
+        <canvas id="waterTempChart"></canvas>
+    </div>
+
+
+</div>
+
+<script>
+    function createChart(canvasId, label){
+
+        return new Chart(
+            document.getElementById(canvasId),
+            {
+                type:'line',
+                data:{
+                    labels:[],
+                    datasets:[{
+                        label:label,
+                        data:[],
+                        borderWidth:2
+                    }]
+                }
+            }
+        );
+    }
+
+    const tempChart =
+        createChart("tempChart", "Nhiệt độ");
+
+    const humidityChart =
+        createChart("humidityChart", "Độ ẩm");
+
+    const pressureChart =
+        createChart("pressureChart", "Áp suất");
+
+    const levelChart =
+        createChart("levelChart", "Mức");
+
+    const flowChart =
+        createChart("flowChart", "Lưu lượng");
+
+    const totalFlowChart =
+        createChart("totalFlowChart", "Lưu lượng tổng");
+
+    const voltage1Chart =
+        createChart("voltage1Chart", "Điện áp 1");
+
+    const voltage2Chart =
+        createChart("voltage2Chart", "Điện áp 2");
+
+    const waterTempChart =
+        createChart("waterTempChart", "Nhiệt nước");
+    
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/microsoft-signalr/8.0.0/signalr.min.js"></script>
+
+<script>
+
+const connection = new signalR.HubConnectionBuilder()
+    .withUrl("/monitorHub")
+    .build();
+
+connection.start()
+    .then(() => {
+        console.log("Trend Connected");
+    })
+    .catch(err => console.error(err));
+
+function updateChart(chart, value, time){
+
+    chart.data.labels.push(time);
+    chart.data.datasets[0].data.push(value);
+
+    // Giữ tối đa 20 điểm
+    if(chart.data.labels.length > 20){
+
+        chart.data.labels.shift();
+        chart.data.datasets[0].data.shift();
+    }
+
+    chart.update();
+}
+
+connection.on("ReceiveData", function(data){
+
+    console.log("ReceiveData", data);
+
+    const time =
+        new Date().toLocaleTimeString();
+
+    updateChart(tempChart, data.temperature, time);
+
+    updateChart(humidityChart, data.humidity, time);
+
+    updateChart(pressureChart, data.pressure, time);
+
+    updateChart(levelChart, data.level, time);
+
+    updateChart(flowChart, data.flow, time);
+
+    updateChart(totalFlowChart, data.totalFlow, time);
+
+    updateChart(voltage1Chart, data.voltage1, time);
+
+    updateChart(voltage2Chart, data.voltage2, time);
+
+    updateChart(waterTempChart, data.waterTemp, time);
+});
+
+</script>
