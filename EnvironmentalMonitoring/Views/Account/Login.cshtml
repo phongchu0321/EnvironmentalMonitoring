@@ -1,0 +1,21 @@
+@model EnvironmentalMonitoring.Models.LoginViewModel
+
+<h2>Đăng nhập</h2>
+
+<form asp-action="Login" method="post">
+
+    <div>
+        <label>Tài khoản</label>
+        <input asp-for="Username" />
+    </div>
+
+    <div>
+        <label>Mật khẩu</label>
+        <input asp-for="Password" type="password" />
+    </div>
+
+    <button type="submit">
+        Đăng nhập
+    </button>
+
+</form>

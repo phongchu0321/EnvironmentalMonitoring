@@ -9,6 +9,12 @@ var builder = WebApplication.CreateBuilder(args);
 //builder.Services.AddSwaggerGen();
 builder.Services.AddSignalR();
 builder.Services.AddControllersWithViews();
+builder.Services.AddAuthentication("MyCookie")
+    .AddCookie("MyCookie", options =>
+    {
+        options.LoginPath = "/Account/Login";
+    });
+builder.Services.AddSession();
 
 var app = builder.Build();
 
@@ -30,6 +36,9 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseAuthentication();
+app.UseAuthorization();
+app.UseSession();
 
 var summaries = new[]
 {
